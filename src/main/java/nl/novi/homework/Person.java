@@ -13,9 +13,9 @@ public class Person {
     private Person mother;
     private Person father;
 
-    private List<Pet> pets;
-    private List<Person> children;
-    private List<Person> siblings;
+    private List<Pet> pets = new ArrayList<>();
+    private List<Person> children = new ArrayList<>();
+    private List<Person> siblings = new ArrayList<>();
 
     public Person(String name, String lastName, int age, String sex){
         this.name = name;
@@ -32,33 +32,37 @@ public class Person {
         this.sex = sex;
     }
 
-    public void addParents(Person mother, Person father, Person child){
-        child.setMother(mother);
-        child.setFather(father);
+    public void addParents(Person mother, Person father){
+        this.mother = mother;
+        this.father = father;
     }
 
     public void addChild(Person child){
-        if (!getChildren().contains(child)) {
-            getChildren().add(child);
-        }
-
-        mother.setChildren(children);
-
+        children.add(child);
     }
 
-    public void addPet(Person person, Pet pet){
-        List<Pet> pets = new ArrayList<>();
-        if (person.getPets() != null){
-            pets.addAll(person.getPets());
-        }
+    public void addPet(Pet pet){
         pets.add(pet);
-        person.setPets(pets);
     }
 
-    public void addSibling(Person person, Person sibling){
-
+    public void addSibling(Person sibling){
+        siblings.add(sibling);
     }
 
+    public List<Person> getGrandChildren (Person person){
+        List<Person> grandChildren = new ArrayList<>();
+        if (person.getChildren() != null){
+            for (Person child : person.getChildren())
+                    {
+                        if (child.getChildren() != null){
+                            for (Person grandKid : child.getChildren()){
+                                grandChildren.add(grandKid);
+                            }
+                        }
+                    }
+        }
+        return grandChildren;
+    }
 //    getters
     public String getName() {
         return name;
